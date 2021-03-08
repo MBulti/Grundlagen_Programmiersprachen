@@ -30,12 +30,9 @@ regeln(Rows) :-
 
     /*Die einzelnen Blöcke benennen, mit Variablen*/ 
     Rows = [A,B,C,D,E,F,G,H,I],
-    /*nun immer drei Reihen am Stück*/
-    /*Erste Reihe A, B, C*/
+    /*Immer drei Reihen am Stück*/
     squares(A, B, C),
-    /*Zweite Reihe D, E, F*/
     squares(D, E, F),
-    /*Dritte Reihe G, H, I*/
     squares(G, H, I).
     
 
@@ -57,6 +54,7 @@ squares( [AA, BB, CC | Rest1],
 loeseSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
 generiereSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
+/* noch mit löschen? */
 
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
             [2,_,_,_,_,_,_,4,_],
@@ -88,10 +86,7 @@ puzzle(3,  [[_,5,_,1,_,_,_,_,_],
             [_,7,_,_,_,_,_,1,9],
             [9,_,_,_,_,8,_,_,_]]).
 
-/*In SWI Prolog
-?- puzzle(1,Rows), regeln(Rows), maplist(portray_clause, Rows).*/
-
-/*
-?- regeln(Rows), maplist(label, Rows), maplist(portray_clause, Rows).
+/* In SWI Prolog
+?- puzzle(1,Rows), loeseSudoku(Rows).
 */
 /*https://www.youtube.com/watch?v=5KUdEZTu06o&ab_channel=ThePowerofProlog*/
