@@ -49,13 +49,9 @@ squares( [AA, BB, CC | Rest1],
     squares(Rest1, Rest2, Rest3).
 
 /*Beispiel für ein squares
-1   2   3   4   5   6   7   8   9
-10  11  12  13  14  15  16  17  18
-19  20  21  22  23  24  25  ...
-
-AA = 1   BB = 2   CC = 3    Rest1 = 4, 5, 6, 7, 8, 9
-DD = 10  EE = 11  FF = 12   Rest2 = 13, 14, 15, 16, 17 ...
-GG = 19  HH = 20  II = 21   ...
+1   2   3   4   5   6   7   8   9       AA = 1   BB = 2   CC = 3    Rest1 = 4, 5, 6, 7, 8, 9
+10  11  12  13  14  15  16  17  18      DD = 10  EE = 11  FF = 12   Rest2 = 13, 14, 15, 16, 17 ...
+19  20  21  22  23  24  25  ...         GG = 19  HH = 20  II = 21   ...
 */
 
 loeseSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
