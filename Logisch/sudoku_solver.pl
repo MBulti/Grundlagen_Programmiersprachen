@@ -1,6 +1,6 @@
 :- use_module(library(clpfd)).
 
-solver(Rows) :-
+regeln(Rows) :-
     /*Sind alle Reihen 9 Lang*/
     length(Rows, 9), 
     /*Sind die Spalten 9 Lang (Liste der Liste)*/
@@ -36,37 +36,31 @@ solver(Rows) :-
     /*Zweite Reihe D, E, F*/
     squares(D, E, F),
     /*Dritte Reihe G, H, I*/
-/*
-    squares(G, H, I),
-    maplist(labeling([ff]), Rows). 
-*/
     squares(G, H, I).
     
 
 /*Wird verwendet wenn wir am dritten Square sind, es gibt nur insgesamt 9*/
 squares([], [], []).
-/*Die ersten drei Zahlen jeder der drei Reihe (A-I) und alle anderen 6 Zahlen jeder Reihe als Ss1..., dann Rekursiver Aufruf der Funktion*/
-squares( [AA, BB, CC | Ss1],
-         [DD, EE, FF | Ss2],
-         [GG, HH, II | Ss3]) :-
+/*Die ersten drei Zahlen jeder der drei Reihe (AA-II) und alle anderen 6 Zahlen jeder Reihe als Rest1..., dann Rekursiver Aufruf der Funktion*/
+squares( [AA, BB, CC | Rest1],
+         [DD, EE, FF | Rest2],
+         [GG, HH, II | Rest3]) :-
     all_distinct([AA, BB, CC, DD, EE, FF, GG, HH, II]),
-    squares(Ss1, Ss2, Ss3).
+    squares(Rest1, Rest2, Rest3).
 
 /*Beispiel für ein squares
 1   2   3   4   5   6   7   8   9
 10  11  12  13  14  15  16  17  18
 19  20  21  22  23  24  25  ...
 
-A = 1   B = 2   C = 3   Ss1 = 4, 5, 6, 7, 8, 9
-D = 10  E = 11  F = 12  Ss2 = 13, 14, 15, 16, 17 ...
-G = 19  H = 20  I = 21
-
-
-
+AA = 1   BB = 2   CC = 3    Rest1 = 4, 5, 6, 7, 8, 9
+DD = 10  EE = 11  FF = 12   Rest2 = 13, 14, 15, 16, 17 ...
+GG = 19  HH = 20  II = 21   ...
 */
 
-loeseSudoku(Rows) :- solver(Rows), maplist(label, Rows), maplist(portray_clause, Rows).
+loeseSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
+generiereSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
             [2,_,_,_,_,_,_,4,_],
@@ -99,11 +93,9 @@ puzzle(3,  [[_,5,_,1,_,_,_,_,_],
             [9,_,_,_,_,8,_,_,_]]).
 
 /*In SWI Prolog
-?- puzzle(1,Rows), solver(Rows), maplist(portray_clause, Rows).*/
+?- puzzle(1,Rows), regeln(Rows), maplist(portray_clause, Rows).*/
 
 /*
-?- solver(Rows), maplist(label, Rows), maplist(portray_clause, Rows).
+?- regeln(Rows), maplist(label, Rows), maplist(portray_clause, Rows).
 */
-
-
 /*https://www.youtube.com/watch?v=5KUdEZTu06o&ab_channel=ThePowerofProlog*/
