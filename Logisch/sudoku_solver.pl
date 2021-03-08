@@ -12,7 +12,9 @@ solver(Rows) :-
     /*Schleife ForEach Row, all_distinct*/
     maplist(all_distinct, Rows),
     /*"Drehen" der einzelnen Reihen, Rows werden Columns, Columns werden Rows*/
-    /*
+    
+    transpose(Rows, Columns),
+    /* Transpose
     Vorher
     1   2   3   4   5   6   7   8   9
     10  11  12  13  14  15  16  17  18
@@ -22,7 +24,7 @@ solver(Rows) :-
     2   11  20  29  38  47  56  65  74 
     3   12  21  30  ...
     */
-    transpose(Rows, Columns),
+
     /*Schleife, um auch die Spalten all_distinct zu machen*/
     maplist(all_distinct, Columns),
 
@@ -44,10 +46,10 @@ solver(Rows) :-
 /*Wird verwendet wenn wir am dritten Square sind, es gibt nur insgesamt 9*/
 squares([], [], []).
 /*Die ersten drei Zahlen jeder der drei Reihe (A-I) und alle anderen 6 Zahlen jeder Reihe als Ss1..., dann Rekursiver Aufruf der Funktion*/
-squares( [A, B, C | Ss1],
-         [D, E, F | Ss2],
-         [G, H, I | Ss3]) :-
-    all_distinct([A, B, C, D, E, F, G, H, I]),
+squares( [AA, BB, CC | Ss1],
+         [DD, EE, FF | Ss2],
+         [GG, HH, II | Ss3]) :-
+    all_distinct([AA, BB, CC, DD, EE, FF, GG, HH, II]),
     squares(Ss1, Ss2, Ss3).
 
 /*Beispiel für ein squares
@@ -55,13 +57,16 @@ squares( [A, B, C | Ss1],
 10  11  12  13  14  15  16  17  18
 19  20  21  22  23  24  25  ...
 
-A = 1   B = 2   C = 3
-D = 10  E = 11  F = 12
+A = 1   B = 2   C = 3   Ss1 = 4, 5, 6, 7, 8, 9
+D = 10  E = 11  F = 12  Ss2 = 13, 14, 15, 16, 17 ...
 G = 19  H = 20  I = 21
 
-Ss1 = 4, 5, 6, 7, 8, 9
-Ss2 = 13, 14, 15, 16, 17 ...
+
+
 */
+
+loeseSudoku(Rows) :- solver(Rows), maplist(label, Rows), maplist(portray_clause, Rows).
+
 
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
             [2,_,_,_,_,_,_,4,_],
