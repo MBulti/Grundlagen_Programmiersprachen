@@ -34,9 +34,12 @@ solver(Rows) :-
     /*Zweite Reihe D, E, F*/
     squares(D, E, F),
     /*Dritte Reihe G, H, I*/
+/*
     squares(G, H, I),
-
     maplist(labeling([ff]), Rows). 
+*/
+    squares(G, H, I).
+    
 
 /*Wird verwendet wenn wir am dritten Square sind, es gibt nur insgesamt 9*/
 squares([], [], []).
