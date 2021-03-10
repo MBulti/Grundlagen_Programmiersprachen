@@ -15,7 +15,7 @@ namespace Sudoku_Solver
                                         { 0,8,0,3,4,0,0,6,0 },
                                         { 3,0,0,2,0,8,0,0,0 },
                                         { 0,0,0,0,0,0,0,0,0 } };
-            //Console.WriteLine(Werte.GetLength(0).ToString());
+
             Sudoku sudoku = new Sudoku(Werte);
             if(sudoku.Loesen())
             {
