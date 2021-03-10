@@ -41,14 +41,11 @@ rows = id
 cols :: Matrix a -> [Row a]
 cols = transpose
 
-boxsize               :: Int
-boxsize               =  3
-
 boxs :: Matrix a -> [Row a]
 boxs = unpack . map cols . pack
     where
         pack = split . map split
-        split = chop boxsize
+        split = chop 3
         unpack = map concat . concat
 
 chop :: Int -> [a] -> [[a]]
