@@ -16,21 +16,11 @@ namespace Sudoku_Solver
                                         { 3,0,0,2,0,8,0,0,0 },
                                         { 0,0,0,0,0,0,0,0,0 } };
             //Console.WriteLine(Werte.GetLength(0).ToString());
-            Sudoku blub = new Sudoku(Werte);
-            blub.Loesen();
-
-            int rowLength = blub.Werte.GetLength(0);
-            int colLength = blub.Werte.GetLength(1);
-
-            for (int i = 0; i < rowLength; i++)
+            Sudoku sudoku = new Sudoku(Werte);
+            if(sudoku.Loesen())
             {
-                for (int j = 0; j < colLength; j++)
-                {
-                    Console.Write(string.Format("{0} ", blub.Werte[i, j]));
-                }
-                Console.Write(Environment.NewLine + Environment.NewLine);
+                sudoku.Ausgabe();
             }
-            Console.ReadLine();
         }
     }
 }

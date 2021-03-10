@@ -8,11 +8,13 @@ namespace Sudoku_Solver
 {
     class Sudoku
     {
-        public int[,] Werte = new int[9, 9];
+        private int[,] Werte = new int[9, 9];
+
         public Sudoku(int[,] Werte)
         {
             this.Werte = Werte;
         }
+
         public bool Loesen()
         {
             for (int Zeile = 0; Zeile < Werte.GetLength(0); Zeile++)
@@ -42,6 +44,20 @@ namespace Sudoku_Solver
             }
             return true;
         }
+
+        public void Ausgabe()
+        {
+            for (int i = 0; i < Werte.GetLength(0); i++)
+            {
+                for (int j = 0; j < Werte.GetLength(1); j++)
+                {
+                    Console.Write(string.Format("{0} ", Werte[i, j]));
+                }
+                Console.Write(Environment.NewLine + Environment.NewLine);
+            }
+            Console.ReadLine();
+        } 
+
         private bool IstGueltig(int Zeile, int Spalte, int Wert)
         {
             for (int i = 0; i < 9; i++)
@@ -59,7 +75,5 @@ namespace Sudoku_Solver
             }
             return true;
         }
-        private bool
-        
     }
 }
