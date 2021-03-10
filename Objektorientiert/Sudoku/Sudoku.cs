@@ -8,7 +8,7 @@ namespace Sudoku_Solver
 {
     class Sudoku
     {
-        private int[,] Werte = new int[9, 9];
+        public int[,] Werte = new int[9, 9];
         public Sudoku(int[,] Werte)
         {
             this.Werte = Werte;
@@ -29,61 +29,37 @@ namespace Sudoku_Solver
                                 if (Loesen())
                                 {
                                     return true;
+                                } 
+                                else
+                                {
+                                    Werte[Spalte, Zeile] = 0;
                                 }
                             }
                         }
-                        Werte[Spalte, Zeile] = 0;
                         return false;
                     }
                 }
             }
             return true;
         }
-        private bool IstGueltig(int Spalte,int Zeile,int Wert)
+        private bool IstGueltig(int Zeile, int Spalte, int Wert)
         {
-            if(ZeileGueltig(Zeile,Wert) && SpalteGueltig(Spalte, Wert) && BlockGueltig(Zeile, Spalte, Wert))
-            {
-                return true;
-            }
-            return false;
-        }
-        private bool BlockGueltig(int Zeile, int Spalte, int Wert)
-        {
-            //1 2 3
-            //1 2 3
-            //1 2 3 
-            //Prüfung: Wo ist die obere Spalte? Von dort aus Prüfung nach rechts und nach unten --> Modulu
-            for (int x = 0; x < 9; x++)
-            {
-               if (Werte[3 * (Zeile / 3) + x / 3, 3 * (Spalte / 3) + x % 3] != 0 && Werte[3 * (Zeile / 3) + x / 3, 3 * (Spalte / 3) + x % 3] == Wert) return false;
-            }
-            return true;
-
-        }
-        private bool SpalteGueltig(int Spalte, int Wert)
-        {
-            //Komplette Spalte durchlaufen
             for (int i = 0; i < 9; i++)
             {
-                //Prüfung, ob Zeile = Wert 
-                if (Werte[Spalte, i] == Wert) return false;
+                //check row  
+                if (Werte[i, Spalte] != 0 && Werte[i, Spalte] == Wert)
+                    return false;
+                //check column  
+                if (Werte[Zeile, i] != 0 && Werte[Zeile, i] == Wert)
+                    return false;
+                //check 3*3 block  
+                int AktuellerIndex = Werte[3 * (Zeile / 3) + i / 3, 3 * (Spalte / 3) + i % 3];
+                if (AktuellerIndex != 0 && AktuellerIndex == Wert)
+                    return false;
             }
             return true;
         }
-        private bool ZeileGueltig(int Zeile, int Wert)
-        {
-            //Komplette Zeile durchlaufen
-            for (int i = 0; i < 9; i++)
-            {
-                //Prüfung, ob Zeile = Wert 
-                if (Werte[i, Zeile] == Wert) return false;
-            }
-            return true;
-        }
-        private bool IsValid()
-        {
-
-            return false;
-        }
+        private bool
+        
     }
 }
