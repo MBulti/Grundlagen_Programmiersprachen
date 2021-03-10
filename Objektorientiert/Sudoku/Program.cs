@@ -21,6 +21,9 @@ namespace Sudoku_Solver
             {
                 sudoku.Ausgabe();
             }
+            else
+            {
+            }
         }
     }
 }

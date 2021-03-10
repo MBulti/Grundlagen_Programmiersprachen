@@ -29,13 +29,9 @@ namespace Sudoku_Solver
                             {
                                 Werte[Spalte, Zeile] = i;
                                 if (Loesen())
-                                {
                                     return true;
-                                } 
                                 else
-                                {
                                     Werte[Spalte, Zeile] = 0;
-                                }
                             }
                         }
                         return false;
@@ -53,7 +49,7 @@ namespace Sudoku_Solver
                 {
                     Console.Write(string.Format("{0} ", Werte[i, j]));
                 }
-                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.Write("\n");
             }
             Console.ReadLine();
         } 
