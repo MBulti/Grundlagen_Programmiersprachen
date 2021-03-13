@@ -15,15 +15,15 @@ type Wert = Char
 -- Ein einfaches Spielfeld
 -- Es gibt immer einen Punkt, wo nur eine Zahl möglich ist
 einfach :: Spielfeld
-einfach = ["2....1.38",
-        "........5",
-        ".7...6...",
-        ".......13",
-        ".981..257",
-        "31....8..",
-        "9..8...2.",
-        ".5..69784",
-        "4..25...."]
+einfach =   ["2....1.38",
+             "........5",
+             ".7...6...",
+             ".......13",
+             ".981..257",
+             "31....8..",
+             "9..8...2.",
+             ".5..69784",
+             "4..25...."]
 
 -- Diese funktion ist dazu da, um die Zeilen auszulesen und zurückzugeben
 zeilen :: Matrix a -> [Zeile a]
