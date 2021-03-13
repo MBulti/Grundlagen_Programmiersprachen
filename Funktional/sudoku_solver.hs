@@ -55,7 +55,7 @@ gueltig g =   all keinedopplung (zeilen g) &&
 -- Hilfsfunktion zum überprüfen, ob es innerhalb eine Zeile/Spalte/Box keine Doppelten Werte gibt
 keinedopplung :: Eq a => [a] -> Bool
 keinedopplung [] = True -- Standartwert
-keinedopplung (x:xs) = not (elem x xs) && keinedopplung xs
+keinedopplung (x:xs) = notElem x xs && keinedopplung xs
 
 loesen :: Spielfeld -> [Spielfeld]
 -- Erste möglichkeit ein Sudoku zu lösen. Es gibt aber so viele Möglichkeiten, dass das Zusammenfuehren und Überprüfen Ewigkeiten dauern würde.
@@ -63,15 +63,16 @@ loesen :: Spielfeld -> [Spielfeld]
 loesen = filter gueltig . zusammenfuehren . moeglichkeiten
 
 -- Generiere alle Möglichkeiten an Matrixen, welche im aktuellen Spielfeld möglich sind.
+-- Es wird nicht darauf geachtet, ob die Zahl gültig ist oder nicht
 type Moeglichkeiten = [Wert]
 moeglichkeiten :: Spielfeld -> Matrix Moeglichkeiten
-moeglichkeiten g = map(map moeglichkeit) g
-            where
-                -- Ersetze nur den Punkt mit Werten von 1-9
-                moeglichkeit v = if v == '.' then
-                                ['1'..'9']
-                            else
-                                [v]
+moeglichkeiten = map(map moeglichkeit)
+    where
+        -- Ersetze nur den Punkt mit Werten von 1-9
+        moeglichkeit v = if v == '.' then
+                            ['1'..'9']
+                        else
+                            [v]
 
 -- Für jede Möglichkeit in einem Feld wird eine neue Matrix erzeugt.
 zusammenfuehren :: Matrix [a] -> [Matrix a]
