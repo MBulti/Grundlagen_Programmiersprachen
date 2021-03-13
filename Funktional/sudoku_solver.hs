@@ -1,16 +1,16 @@
 import Data.List
 import System.IO
 
-type Grid = Matrix Value
+type Spielfeld = Matrix Wert
 
-type Matrix a = [Row a]
+type Matrix a = [Zeile a]
 
-type Row a = [a]
+type Zeile a = [a]
 
-type Value = Char
+type Wert = Char
 
-easy :: Grid
-easy = ["2....1.38",
+einfach :: Spielfeld
+einfach = ["2....1.38",
         "........5",
         ".7...6...",
         ".......13",
@@ -20,86 +20,71 @@ easy = ["2....1.38",
         ".5..69784",
         "4..25...."]
 
-gentle :: Grid
-gentle =  [".1.42...5",
-           "..2.71.39",
-           ".......4.",
-           "2.71....6",
-           "....4....",
-           "6....74.3",
-           ".7.......",
-           "12.73.5..",
-           "3...82.7."]
+zeilen :: Matrix a -> [Zeile a]
+zeilen = id
 
---Genereiere ein leeres Grid. (9 Zeilen mit jeweils 9 Punkten)
-blank :: Grid
-blank = replicate 9 (replicate 9 '.')
+spalten :: Matrix a -> [Zeile a]
+spalten = transpose
 
-rows :: Matrix a -> [Row a]
-rows = id
-
-cols :: Matrix a -> [Row a]
-cols = transpose
-
-boxs :: Matrix a -> [Row a]
-boxs = unpack . map cols . pack
+boxen :: Matrix a -> [Zeile a]
+boxen = unpack . map spalten . pack
     where
         pack = split . map split
-        split = chop 3
+        split = aufteilen 3
         unpack = map concat . concat
 
-chop :: Int -> [a] -> [[a]]
-chop n [] = []
-chop n xs = take n xs : chop n (drop n xs)
+aufteilen :: Int -> [a] -> [[a]]
+aufteilen n [] = []
+aufteilen n xs = take n xs : aufteilen n (drop n xs)
 
 
-valid :: Grid -> Bool
-valid g =   all nodups (rows g) &&
-            all nodups (cols g) &&
-            all nodups (boxs g)
+gueltig :: Spielfeld -> Bool
+gueltig g =   all keinedopplung (zeilen g) &&
+            all keinedopplung (spalten g) &&
+            all keinedopplung (boxen g)
 
-nodups :: Eq a => [a] -> Bool
-nodups [] = True
-nodups (x:xs) = not (elem x xs) && nodups xs
+keinedopplung :: Eq a => [a] -> Bool
+keinedopplung [] = True
+keinedopplung (x:xs) = not (elem x xs) && keinedopplung xs
 
-solve :: Grid -> [Grid]
+loesen :: Spielfeld -> [Spielfeld]
 --         Am Ende das  Dann das  Erst das
-solve = filter valid . collapse . choices
+loesen = filter gueltig . zusammenfuehren . moeglichkeiten
 
-type Choices = [Value]
-choices :: Grid -> Matrix Choices
-choices g = map(map choice) g
+type Choices = [Wert]
+moeglichkeiten :: Spielfeld -> Matrix Choices
+moeglichkeiten g = map(map choice) g
             where
                 choice v = if v == '.' then
                                 ['1'..'9']
                             else
                                 [v]
 
-collapse :: Matrix [a] -> [Matrix a]
-collapse m = cp (map cp m)
+zusammenfuehren :: Matrix [a] -> [Matrix a]
+zusammenfuehren m = cp (map cp m)
 
 cp :: [[a]] -> [[a]]
 cp [] = [[]]
 cp (xs:xss) = [y:ys | y <- xs, ys <- cp xss]
 
-prune :: Matrix Choices -> Matrix Choices
-prune = pruneBy boxs . pruneBy cols . pruneBy rows
-        where pruneBy f = f . map reduce . f
+vereinfachen :: Matrix Choices -> Matrix Choices
+vereinfachen = pruneBy boxen . pruneBy spalten . pruneBy zeilen
+        where pruneBy f = f . map reduzieren . f
 
 single :: [a] -> Bool
 single [_] =  True
 single _ =  False
 
-reduce :: Row Choices -> Row Choices
-reduce xss = [xs `minus` singles | xs <- xss]
+reduzieren :: Zeile Choices -> Zeile Choices
+reduzieren xss = [xs `minus` singles | xs <- xss]
                 where singles = concat (filter single xss)
 
 minus :: Choices -> Choices -> Choices
 xs `minus` ys =  if single xs then xs else xs \\ ys
 
-solve2 = filter valid . collapse . prune . choices
+loesen2 = filter gueltig . zusammenfuehren . vereinfachen . moeglichkeiten
 
-solve3 = filter valid . collapse . fix prune . choices
+loesen3 = filter gueltig . zusammenfuehren . fix vereinfachen . moeglichkeiten
 
 fix :: Eq a => (a -> a) -> a -> a
 fix f x = if x == x' then x else fix f x'
