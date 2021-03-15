@@ -10,31 +10,31 @@ namespace Sudoku_Solver
     {
         #region Properties
         private const int maxLaenge = 9;
-        private int[,] spielFeld = new int[maxLaenge, maxLaenge];
+        private Spielfeld spielfeld;
         #endregion
 
         #region Public
-        public Sudoku(int[,] Werte)
+        public Sudoku(Spielfeld spielfeld)
         {
-            this.spielFeld = Werte;
+            this.spielfeld = spielfeld;
         }
         public bool LoeseSudoku()
         {
-            for (int Zeile = 0; Zeile < spielFeld.GetLength(0); Zeile++)
+            for (int Zeile = 0; Zeile < spielfeld.SpielfeldWerte.GetLength(0); Zeile++)
             {
-                for (int Spalte = 0; Spalte < spielFeld.GetLength(1); Spalte++)
+                for (int Spalte = 0; Spalte < spielfeld.SpielfeldWerte.GetLength(1); Spalte++)
                 {
-                    if (spielFeld[Spalte,Zeile] == 0)
+                    if (spielfeld.SpielfeldWerte[Spalte,Zeile] == 0)
                     {
                         for (int aktuelleZahl = 1; aktuelleZahl <= 9; aktuelleZahl++)
                         {
                             if(IstGueltig(Spalte, Zeile, aktuelleZahl))
                             {
-                                spielFeld[Spalte, Zeile] = aktuelleZahl;
+                                spielfeld.SetzeWert(Spalte, Zeile, aktuelleZahl);
                                 if (LoeseSudoku())
                                     return true;
                                 else
-                                    spielFeld[Spalte, Zeile] = 0;
+                                    spielfeld.SpielfeldWerte[Spalte, Zeile] = 0;
                             }
                         }
                         return false;
@@ -45,11 +45,11 @@ namespace Sudoku_Solver
         }
         public void Ausgabe()
         {
-            for (int i = 0; i < spielFeld.GetLength(0); i++)
+            for (int i = 0; i < spielfeld.SpielfeldWerte.GetLength(0); i++)
             {
-                for (int j = 0; j < spielFeld.GetLength(1); j++)
+                for (int j = 0; j < spielfeld.SpielfeldWerte.GetLength(1); j++)
                 {
-                    Console.Write(string.Format("{0} ", spielFeld[i, j]));
+                    Console.Write(string.Format("{0} ", spielfeld.SpielfeldWerte[i, j]));
                 }
                 Console.Write("\n");
             }
@@ -63,13 +63,13 @@ namespace Sudoku_Solver
             for (int i = 0; i < maxLaenge; i++)
             {
                 //check row  
-                if (spielFeld[i, Spalte] != 0 && spielFeld[i, Spalte] == Wert)
+                if (spielfeld.SpielfeldWerte[i, Spalte] != 0 && spielfeld.SpielfeldWerte[i, Spalte] == Wert)
                     return false;
                 //check column  
-                if (spielFeld[Zeile, i] != 0 && spielFeld[Zeile, i] == Wert)
+                if (spielfeld.SpielfeldWerte[Zeile, i] != 0 && spielfeld.SpielfeldWerte[Zeile, i] == Wert)
                     return false;
                 //check 3*3 block  
-                int AktuellerIndex = spielFeld[3 * (Zeile / 3) + i / 3, 3 * (Spalte / 3) + i % 3];
+                int AktuellerIndex = spielfeld.SpielfeldWerte[3 * (Zeile / 3) + i / 3, 3 * (Spalte / 3) + i % 3];
                 if (AktuellerIndex != 0 && AktuellerIndex == Wert)
                     return false;
             }

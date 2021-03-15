@@ -35,8 +35,8 @@ namespace Sudoku_Solver
                                                { 0,8,0,3,4,0,0,6,0 },
                                                { 3,0,0,2,0,8,0,0,0 },
                                                { 0,0,0,0,0,0,0,0,0 } };
-
-            Sudoku sudoku = new Sudoku(sudokuEinfach);
+            Spielfeld spielfeld = new Spielfeld(sudokuEinfach);
+            Sudoku sudoku = new Sudoku(spielfeld);
             if (sudoku.LoeseSudoku())
                 sudoku.Ausgabe();
             else
