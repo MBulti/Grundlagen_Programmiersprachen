@@ -51,9 +51,12 @@ squares( [AA, BB, CC | Rest1],
 19  20  21  22  23  24  25  ...         GG = 19  HH = 20  II = 21   ...
 */
 
-loeseSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
+loeseSudoku(Number) :- puzzle(Number, Rows), regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
 generiereSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
+
+/* turn on tracing? */
+
 /* noch mit löschen? */
 
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
