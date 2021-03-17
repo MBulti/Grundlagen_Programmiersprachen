@@ -34,7 +34,7 @@ namespace Sudoku_Solver
                                 if (LoeseSudoku())
                                     return true;
                                 else
-                                    spielfeld.SpielfeldWerte[Spalte, Zeile] = 0;
+                                    spielfeld.SetzeWert(Spalte, Zeile, 0);
                             }
                         }
                         return false;
