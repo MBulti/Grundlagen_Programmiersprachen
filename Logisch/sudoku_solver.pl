@@ -1,63 +1,47 @@
 :- use_module(library(clpfd)).
 
-regeln(Rows) :-
-    /*Sind alle Reihen 9 Lang*/
-    length(Rows, 9), 
-    /*Sind die Spalten 9 Lang (Liste der Liste)*/
-    maplist(same_length(Rows), Rows),
-    /*Alle Eingaben der Rows (die Zahlen) sind in Vs definiert*/
-    append(Rows, Vs),
-    /*Vs sind die Zahlen von 1 bis 9*/
+regeln(Zeilen) :-
+    length(Zeilen, 9), 
+    maplist(same_length(Zeilen), Zeilen),
+    append(Zeilen, Vs), 
     Vs ins 1..9,
-    /*Schleife ForEach Row, all_distinct*/
-    maplist(all_distinct, Rows),
-    /*"Drehen" der einzelnen Reihen, Rows werden Columns, Columns werden Rows*/
+    maplist(all_distinct, Zeilen),
     
-    transpose(Rows, Columns),
-    /* Transpose
-    Vorher
-    1   2   3   4   5   6   7   8   9
-    10  11  12  13  14  15  16  17  18
-    19  20  21  22  23  24  25  ...
-    Nachher
-    1   10  19  28  37  46  55  64  73
-    2   11  20  29  38  47  56  65  74 
-    3   12  21  30  ...
-    */
+    transpose(Zeilen, Spalten),
+    maplist(all_distinct, Spalten),
 
-    /*Schleife, um auch die Spalten all_distinct zu machen*/
-    maplist(all_distinct, Columns),
-
-    /*Die einzelnen Blöcke benennen, mit Variablen*/ 
-    Rows = [A,B,C,D,E,F,G,H,I],
-    /*Immer drei Reihen am Stück*/
-    squares(A, B, C),
-    squares(D, E, F),
-    squares(G, H, I).
+    Zeilen = [A,B,C,D,E,F,G,H,I],
+    block(A, B, C),
+    block(D, E, F),
+    block(G, H, I).
     
 
-/*Wird verwendet wenn wir am dritten Square sind, es gibt nur insgesamt 9*/
-squares([], [], []).
-/*Die ersten drei Zahlen jeder der drei Reihe (AA-II) und alle anderen 6 Zahlen jeder Reihe als Rest1..., dann Rekursiver Aufruf der Funktion*/
-squares( [AA, BB, CC | Rest1],
+
+
+
+block([], [], []).
+block( [AA, BB, CC | Rest1],
          [DD, EE, FF | Rest2],
          [GG, HH, II | Rest3]) :-
     all_distinct([AA, BB, CC, DD, EE, FF, GG, HH, II]),
-    squares(Rest1, Rest2, Rest3).
+    block(Rest1, Rest2, Rest3).
 
-/*Beispiel für ein squares
-1   2   3   4   5   6   7   8   9       AA = 1   BB = 2   CC = 3    Rest1 = 4, 5, 6, 7, 8, 9
-10  11  12  13  14  15  16  17  18      DD = 10  EE = 11  FF = 12   Rest2 = 13, 14, 15, 16, 17 ...
-19  20  21  22  23  24  25  ...         GG = 19  HH = 20  II = 21   ...
-*/
+loeseSudoku(Number) :- 
+    puzzle(Number, Rows), 
+    regeln(Rows), 
+    maplist(labeling([ff]), Rows), 
+    maplist(portray_clause, Rows).
+    
 
-loeseSudoku(Number) :- puzzle(Number, Rows), regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
-generiereSudoku(Rows) :- regeln(Rows), maplist(labeling([ff]), Rows), maplist(portray_clause, Rows).
 
-/* turn on tracing? */
+generiereSudoku(Rows) :- 
+    regeln(Rows), 
+    maplist(labeling([ff]), Rows), 
+    maplist(portray_clause, Rows).
 
-/* noch mit löschen? */
+/*Beispiele*/
+
 
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
             [2,_,_,_,_,_,_,4,_],
