@@ -58,7 +58,7 @@ keinedopplung [] = True -- Standartwert
 keinedopplung (x:xs) = notElem x xs && keinedopplung xs
 
 loesen :: Spielfeld -> [Spielfeld]
--- Erste möglichkeit ein Sudoku zu lösen. Es gibt aber so viele Möglichkeiten, dass das Zusammenfuehren und Überprüfen Ewigkeiten dauern würde.
+-- Erste Möglichkeit ein Sudoku zu lösen. Es gibt aber so viele Möglichkeiten, dass das Zusammenfuehren und Überprüfen Ewigkeiten dauern würde.
 -- Verbindungen von Funktionen werden von rechts nach links ausgeführt. Die Ausgabe er einen Funktion wird die Eingabe in die nächste Funktion. 
 loesen = filter gueltig . zusammenfuehren . moeglichkeiten
 
