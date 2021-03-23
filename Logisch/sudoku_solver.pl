@@ -16,9 +16,6 @@ regeln(Zeilen) :-
     block(G, H, I).
     
 
-
-
-
 block([], [], []).
 block( [AA, BB, CC | Rest1],
          [DD, EE, FF | Rest2],
@@ -26,13 +23,12 @@ block( [AA, BB, CC | Rest1],
     all_distinct([AA, BB, CC, DD, EE, FF, GG, HH, II]),
     block(Rest1, Rest2, Rest3).
 
-loeseSudoku(Number) :- 
-    puzzle(Number, Rows), 
-    regeln(Rows), 
-    maplist(labeling([ff]), Rows), 
-    maplist(portray_clause, Rows).
-    
 
+loeseSudoku(Nummer) :- 
+    puzzle(Nummer, Zeilen), 
+    regeln(Zeilen), 
+    maplist(labeling([ff]), Zeilen), 
+    maplist(portray_clause, Zeilen).
 
 
 generiereSudoku(Rows) :- 
@@ -41,8 +37,6 @@ generiereSudoku(Rows) :-
     maplist(portray_clause, Rows).
 
 /*Beispiele*/
-
-
 puzzle(1,  [[_,4,_,9,_,_,_,5,_],
             [2,_,_,_,_,_,_,4,_],
             [1,9,_,_,8,_,7,_,_],
@@ -73,7 +67,3 @@ puzzle(3,  [[_,5,_,1,_,_,_,_,_],
             [_,7,_,_,_,_,_,1,9],
             [9,_,_,_,_,8,_,_,_]]).
 
-/* In SWI Prolog
-?- puzzle(1,Rows), loeseSudoku(Rows).
-*/
-/*https://www.youtube.com/watch?v=5KUdEZTu06o&ab_channel=ThePowerofProlog*/
